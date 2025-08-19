@@ -31,8 +31,37 @@ public class ProductService {
     }
 
     public Product updateProductPartially(Long id, Map<String, Object> updates) {
-        Product product = productRepository.findById(id).orElseThrow();
-       return productRepository.save(product);
+        Product existingProduct = findById(id);
 
+        updates.forEach((key, value) -> {
+            switch (key) {
+                case "productName":
+                    if (value instanceof String) {
+                        existingProduct.setProductName((String) value);
+                    }
+                    break;
+                case "productDescription":
+                    if (value instanceof String) {
+                        existingProduct.setProductDescription((String) value);
+                    }
+                    break;
+                case "productPrice":
+                    if (value instanceof Number) {
+                        existingProduct.setProductPrice(new BigDecimal(value.toString()));
+                    }
+                    break;
+                case "productStock":
+                    if (value instanceof Integer) {
+                        existingProduct.setProductStock((Integer) value);
+                    }
+                    break;
+                case "productCategory":
+                    if (value instanceof String) {
+                        existingProduct.setProductCategory((String) value);
+                    }
+                    break;
+            }
+        });
+        return productRepository.save(existingProduct);
     }
 }
