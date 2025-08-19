@@ -4,6 +4,7 @@ import org.example.day12_product_inventory.entity.Product;
 import org.example.day12_product_inventory.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -15,8 +16,13 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public List<Product> findAll() {
-        return productRepository.findAll();
+    public List<Product> getAllProducts(String category, BigDecimal maxPrice) {
+        List<Product> products = (List<Product>) productRepository.findAll();
+
+        return products.stream()
+                .filter(product -> category == null || product.getProductCategory().equalsIgnoreCase(category))
+                .filter(product -> maxPrice == null || product.getProductPrice().compareTo(maxPrice) <= 0)
+                .toList();
     }
 
     public Product findById(Long id) {
@@ -26,6 +32,7 @@ public class ProductService {
     public Product save(Product product) {
         return productRepository.save(product);
     }
+
     public void deleteById(Long id) {
         productRepository.deleteById(id);
     }

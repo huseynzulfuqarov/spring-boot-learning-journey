@@ -5,21 +5,24 @@ import org.example.day12_product_inventory.repository.ProductRepository;
 import org.example.day12_product_inventory.service.ProductService;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/products")
 public class ProductController {
     private final ProductService productService;
+
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
     @GetMapping
-    public List<Product> findAll() {
-        return  productService.findAll();
+    public List<Product> getAllProducts(
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) BigDecimal maxPrice) {
+        return productService.getAllProducts(category, maxPrice);
     }
 
     @GetMapping("/{id}")
@@ -32,9 +35,9 @@ public class ProductController {
         return productService.save(product);
     }
 
-    @DeleteMapping("")
-    public void delete(@RequestBody Product product) {
-        productService.deleteById(product.getId());
+    @DeleteMapping("{id}")
+    public void delete(@PathVariable Long id) {
+        productService.deleteById(id);
     }
 
     @PatchMapping("/{id}")
