@@ -1,7 +1,6 @@
 package org.example.day12_product_inventory.controller;
 
 import org.example.day12_product_inventory.entity.Product;
-import org.example.day12_product_inventory.repository.ProductRepository;
 import org.example.day12_product_inventory.service.ProductService;
 import org.springframework.web.bind.annotation.*;
 
