@@ -1,5 +1,7 @@
 package org.example.day15_dto_pattern.controller;
 
+import org.example.day15_dto_pattern.dto.CreateStudentRequestDTO;
+import org.example.day15_dto_pattern.dto.StudentResponseDTO;
 import org.example.day15_dto_pattern.entity.Student;
 import org.example.day15_dto_pattern.service.StudentService;
 import org.springframework.http.ResponseEntity;
@@ -18,22 +20,22 @@ public class StudentController {
     }
 
     @GetMapping
-    public List<Student> findAll() {
-        return studentService.findAll();
+    public List<StudentResponseDTO> findAll() {
+        return studentService.findAllStudents();
     }
 
     @GetMapping("/{id}")
-    public Student findById(@PathVariable Long id) {
-        return studentService.findById(id);
+    public StudentResponseDTO findById(@PathVariable Long id) {
+        return studentService.findStudentById(id);
     }
 
     @PostMapping
-    public Student save(@RequestBody Student student) {
-        return studentService.save(student);
+    public StudentResponseDTO save(@RequestBody CreateStudentRequestDTO student) {
+        return studentService.saveStudent(student);
     }
 
     @PutMapping("/{id}")
-    public Student update(@PathVariable Long id, @RequestBody Student student) {
+    public StudentResponseDTO update(@PathVariable Long id, @RequestBody CreateStudentRequestDTO student) {
         return studentService.updateData(id, student);
     }
 
@@ -44,17 +46,17 @@ public class StudentController {
     }
 
     @GetMapping("/search/email-not-like")
-    public List<Student> findByDomain(@RequestParam String domain) {
+    public List<StudentResponseDTO> findByDomain(@RequestParam String domain) {
         return studentService.findStudentsWithEmailNotEndingWith(domain);
     }
 
     @GetMapping("/search/age-range")
-    public List<Student> findByAgeRange(@RequestParam Integer min, @RequestParam Integer max) {
+    public List<StudentResponseDTO> findByAgeRange(@RequestParam Integer min, @RequestParam Integer max) {
         return studentService.findStudentsInAgeRange(min, max);
     }
 
     @GetMapping("/search/native-by-name")
-    public Student findByNameNative(@RequestParam String name) {
+    public StudentResponseDTO findByNameNative(@RequestParam String name) {
         return studentService.findStudentByNameNative(name);
     }
 }
